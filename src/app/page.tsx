@@ -1,103 +1,149 @@
+"use client";
+import React, { useState, useEffect } from "react";
+
+import SimpleMarquee from "@/fancy/components/blocks/simple-marquee";
+import RandomLetterSwapPingPong from "@/components/ui/random-letter-swap-pingpong-anim";
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+const exampleImages = [
+  "https://cdn.cosmos.so/4b771c5c-d1eb-4948-b839-255dbeb931ba?format=jpeg",
+  "https://cdn.cosmos.so/a8d82afd-2293-43ad-bac3-887683d85b44?format=jpeg",
+  "https://cdn.cosmos.so/49206ba5-c174-4cd5-aee8-5b744842e6c2?format=jpeg",
+  "https://cdn.cosmos.so/b29bd150-6477-420f-8efb-65ed99694421?format=jpeg",
+  "https://cdn.cosmos.so/e1a0313e-7617-431d-b7f1-f1b169e6bcb4?format=jpeg",
+  "https://cdn.cosmos.so/ad640c12-69fb-4186-bc3d-b1cc93986a37?format=jpeg",
+  "https://cdn.cosmos.so/5cf0c3d2-e785-41a3-b0c8-a073ee2f2862?format=jpeg",
+  "https://cdn.cosmos.so/938ab21c-a975-41b3-b303-418290343b09?format=jpeg",
+  "https://cdn.cosmos.so/2e14a9bb-27e3-40fd-b940-cfb797a1224c?format=jpeg",
+  "https://cdn.cosmos.so/81841d9f-e164-4770-aebc-cfc97d72f3ab?format=jpeg",
+  "https://cdn.cosmos.so/49b81db0-37ea-4569-b0d6-04afa5115a10?format=jpeg",
+  "https://cdn.cosmos.so/ade1834b-9317-44fb-8dc3-b43d29acd409?format=jpeg",
+  "https://cdn.cosmos.so/621c250c-3833-45f9-862a-3f400aaf8f28?format=jpeg",
+  "https://cdn.cosmos.so/f9b7eae8-e5a6-4ce6-b6e1-9ef125ba7f8e?format=jpeg",
+  "https://cdn.cosmos.so/bd56ed6d-1bbd-44a4-b1a1-79b7199bbebb?format=jpeg",
+];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+const MarqueeItem = ({ children }: { children: React.ReactNode }) => (
+  <div className="mx-2 sm:mx-3 md:mx-4 hover:scale-105 cursor-pointer duration-300 ease-in-out">
+    {children}
+  </div>
+);
+
+export default function HomePage() {
+  const firstThird = exampleImages.slice(
+    0,
+    Math.floor(exampleImages.length / 3)
+  );
+  const secondThird = exampleImages.slice(
+    Math.floor(exampleImages.length / 3),
+    Math.floor((2 * exampleImages.length) / 3)
+  );
+  const lastThird = exampleImages.slice(
+    Math.floor((2 * exampleImages.length) / 3)
+  );
+
+  const [container, setContainer] = useState<HTMLElement | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  return (
+    <div
+      className="flex w-full h-[calc(100vh-4rem)] relative justify-center items-center flex-col bg-[#CAF0F8] overflow-hidden"
+      ref={setContainer}
+    >
+      <RandomLetterSwapPingPong
+        label="Munja Bank'a Hoş Geldiniz"
+        reverse={false}
+        staggerDuration={0.03}
+        className="absolute z-10 text-center text-3xl sm:text-5xl md:text-6xl top-3  text-black font-serif"
+      />
+      {isMounted && container && (
+        <div className="absolute h-[170%] sm:h-[200%] top-0 w-full justify-center items-center flex flex-col space-y-2 sm:space-y-3 md:space-y-4">
+          <SimpleMarquee
+            className="w-full"
+            baseVelocity={8}
+            repeat={4}
+            draggable={false}
+            scrollSpringConfig={{ damping: 50, stiffness: 400 }}
+            slowDownFactor={0.1}
+            slowdownOnHover
+            slowDownSpringConfig={{ damping: 60, stiffness: 300 }}
+            scrollAwareDirection={true}
+            scrollContainer={{ current: container }}
+            useScrollVelocity={true}
+            direction="left"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            {firstThird.map((src, i) => (
+              <MarqueeItem key={i}>
+                <Image
+                  src={src}
+                  alt={`Image ${i + 1}`}
+                  width={192}
+                  height={80}
+                  className="h-20 w-32 sm:h-24 sm:w-40 md:h-32 md:w-48 object-cover rounded-lg"
+                />
+              </MarqueeItem>
+            ))}
+          </SimpleMarquee>
+
+          <SimpleMarquee
+            className="w-full"
+            baseVelocity={8}
+            repeat={4}
+            scrollAwareDirection={true}
+            scrollSpringConfig={{ damping: 50, stiffness: 400 }}
+            slowdownOnHover
+            slowDownFactor={0.1}
+            slowDownSpringConfig={{ damping: 60, stiffness: 300 }}
+            useScrollVelocity={true}
+            scrollContainer={{ current: container }}
+            draggable={false}
+            direction="right"
           >
-            Read our docs
-          </a>
+            {secondThird.map((src, i) => (
+              <MarqueeItem key={i}>
+                <Image
+                  src={src}
+                  alt={`Image ${i + firstThird.length}`}
+                  width={192}
+                  height={80}
+                  className="h-20 w-32 sm:h-24 sm:w-40 md:h-32 md:w-48 object-cover rounded-lg"
+                />
+              </MarqueeItem>
+            ))}
+          </SimpleMarquee>
+
+          <SimpleMarquee
+            className="w-full"
+            baseVelocity={8}
+            repeat={4}
+            draggable={false}
+            scrollSpringConfig={{ damping: 50, stiffness: 400 }}
+            slowDownFactor={0.1}
+            slowdownOnHover
+            slowDownSpringConfig={{ damping: 60, stiffness: 300 }}
+            scrollAwareDirection={true}
+            scrollContainer={{ current: container }}
+            useScrollVelocity={true}
+            direction="left"
+          >
+            {lastThird.map((src, i) => (
+              <MarqueeItem key={i}>
+                <Image
+                  src={src}
+                  alt={`Image ${i + firstThird.length + secondThird.length}`}
+                  width={192}
+                  height={80}
+                  className="h-20 w-32 sm:h-24 sm:w-40 md:h-32 md:w-48 object-cover rounded-lg"
+                />
+              </MarqueeItem>
+            ))}
+          </SimpleMarquee>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )}
     </div>
   );
 }
