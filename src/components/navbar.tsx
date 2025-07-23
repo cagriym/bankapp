@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import { MainNav } from "@/components/main-nav";
 import { siteConfig } from "@/config/site";
 import { Icons } from "./icons";
 import { Button } from "./ui/button";
@@ -23,21 +22,55 @@ export async function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 max-w-screen-2xl items-center">
-        {/* Left: Logo */}
-        <Link href="/" className="flex items-center space-x-2">
-          <Icons.logo className="h-6 w-6" />
-          <span className="hidden font-bold sm:inline-block">
-            {siteConfig.name}
-          </span>
-        </Link>
-        {/* Center: Navigation */}
-        <div className="flex-1 flex justify-center">
-          <MainNav />
+      <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
+        {/* Left: Logo (min width) */}
+        <div className="flex items-center min-w-[200px]">
+          <Link href="/" className="flex items-center space-x-2">
+            <Icons.logo className="h-6 w-6" />
+            <span className="hidden font-bold sm:inline-block">
+              {siteConfig.name}
+            </span>
+          </Link>
         </div>
-        {/* Right: User/Online İşlemler */}
-        <div className="flex items-center gap-4">
-          {user ? (
+
+        {/* Center: Navigation ortalanmış */}
+        <div className="flex-1 flex justify-center">
+          <nav className="flex items-center gap-6">
+            <Link
+              href="/bireysel"
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
+              Bireysel
+            </Link>
+            <Link
+              href="/ticari"
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
+              Ticari
+            </Link>
+            <Link
+              href="/yatirim"
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
+              Yatırım
+            </Link>
+            <Link
+              href="/yatirimci-iliskileri"
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
+              Yatırımcı İlişkileri
+            </Link>
+          </nav>
+        </div>
+
+        {/* Right: Online İşlemler (daha sağda) */}
+        <div className="flex items-center justify-end gap-4 min-w-[200px]">
+          {!user && (
+            <Button asChild>
+              <Link href="/login">Online İşlemler</Link>
+            </Button>
+          )}
+          {user && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -74,10 +107,6 @@ export async function Navbar() {
                 <SignOutButton />
               </DropdownMenuContent>
             </DropdownMenu>
-          ) : (
-            <Button asChild>
-              <Link href="/login">Online İşlemler</Link>
-            </Button>
           )}
         </div>
       </div>

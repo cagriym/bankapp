@@ -13,7 +13,7 @@ export default function YatirimPage() {
         <div className="border p-4 rounded-lg">
           <h2 className="text-xl font-semibold mb-2">Hisse Senedi</h2>
           <p>
-            Borsa İstanbul'da işlem gören hisse senetlerine yatırım yaparak
+            Borsa İstanbul&#39;da işlem gören hisse senetlerine yatırım yaparak
             şirketlerin büyümesine ortak olun.
           </p>
         </div>
@@ -50,7 +50,7 @@ export default function YatirimPage() {
         <div className="border p-4 rounded-lg">
           <h2 className="text-xl font-semibold mb-2">Eurobond</h2>
           <p>
-            Döviz cinsinden ihraç edilen Eurobond'lar ile uluslararası
+            Döviz cinsinden ihraç edilen Eurobond&#39;lar ile uluslararası
             piyasalarda yatırım yapma fırsatı yakalayın.
           </p>
         </div>

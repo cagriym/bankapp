@@ -1,4 +1,4 @@
-# ATM Yönetim Sistemi - Hızlı Geliştirme Roadmap (2 Hafta)
+# Staj Defteri - 30 Günlük Plan
 
 ## Teknoloji Stack
 
@@ -28,33 +28,31 @@
 - **Real-time Features**: Supabase Realtime
 - **File Storage**: Supabase Storage
 
-## Hızlı Geliştirme Planı (2 Hafta)
+## Geliştirme Planı (30 Gün)
 
-### 1. Hafta: Temel Altyapı ve Core Özellikler
-
-#### Gün 1-2: Proje Kurulumu ve Database
+#### Gün 1-4: Proje Kurulumu ve Database
 
 **Hedef**: Proje altyapısını hazırlamak
 
-- [ ] Next.js + TypeScript kurulumu
-- [ ] shadcn/ui kurulumu ve temel bileşenler
-- [ ] Fastify backend kurulumu
-- [ ] Supabase hesabı ve database kurulumu
-- [ ] Temel tablo yapıları (users, accounts, transactions, atm_machines, banknote_inventory)
-- [ ] Environment variables ayarları
+- [x] Next.js + TypeScript kurulumu
+- [x] shadcn/ui kurulumu ve temel bileşenler
+- [x] Fastify backend kurulumu
+- [x] Supabase hesabı ve database kurulumu
+- [x] Temel tablo yapıları (users, accounts, transactions, atm_machines, banknote_inventory)
+- [x] Environment variables ayarları
 
-#### Gün 3-4: Authentication ve User Management
+#### Gün 5-8: Authentication ve User Management
 
 **Hedef**: Kullanıcı giriş/çıkış sistemi
 
-- [ ] Supabase Auth entegrasyonu
+- [x] Supabase Auth entegrasyonu
 - [ ] PIN şifreleme sistemi
-- [ ] Login/Register sayfaları
+- [x] Login/Register sayfaları
 - [ ] Zustand auth store
-- [ ] Protected routes
+- [x] Protected routes
 - [ ] Hesap kilitleme (basit versiyon)
 
-#### Gün 5-6: ATM Para Çekme Sistemi
+#### Gün 9-12: ATM Para Çekme Sistemi
 
 **Hedef**: Temel para çekme özelliği
 
@@ -65,7 +63,7 @@
 - [ ] Bakiye kontrolü
 - [ ] Basit limit kontrolü
 
-#### Gün 7: Banknot Yönetimi
+#### Gün 13-14: Banknot Yönetimi
 
 **Hedef**: Banknot stok sistemi
 
@@ -74,9 +72,7 @@
 - [ ] Basit admin panel
 - [ ] ATM durumu gösterimi
 
-### 2. Hafta: Gelişmiş Özellikler ve Tamamlama
-
-#### Gün 8-9: Para Yatırma ve İşlem Geçmişi
+#### Gün 15-18: Para Yatırma ve İşlem Geçmişi
 
 **Hedef**: Para yatırma sistemi
 
@@ -86,7 +82,7 @@
 - [ ] İşlem detay sayfaları
 - [ ] Basit fiş sistemi
 
-#### Gün 10-11: Kredi Sistemi
+#### Gün 19-22: Kredi Sistemi
 
 **Hedef**: Basit kredi özelliği
 
@@ -96,7 +92,7 @@
 - [ ] Kredi detay sayfası
 - [ ] Geri ödeme interface'i
 
-#### Gün 12-13: Nakit Yönetimi ve Admin
+#### Gün 23-26: Nakit Yönetimi ve Admin
 
 **Hedef**: Nakit yönetimi sistemi
 
@@ -106,7 +102,7 @@
 - [ ] Stok yönetimi ekranları
 - [ ] Temel raporlar
 
-#### Gün 14: Testing ve Final
+#### Gün 27-30: Testing ve Final
 
 **Hedef**: Test ve tamamlama
 
@@ -258,7 +254,3 @@ Admin:
 - Vercel Preview (deployment)
 - Figma (UI design)
 - Linear/Notion (task tracking)
-
-## Toplam Süre: 14 Gün (112 saat)
-
-**Günde 8 saat çalışma ile 2 hafta içinde tamamlanabilir MVP seviyesinde ATM yönetim sistemi.**
