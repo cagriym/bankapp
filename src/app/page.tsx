@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 
 import SimpleMarquee from "@/fancy/components/blocks/simple-marquee";
-import RandomLetterSwapPingPong from "@/components/ui/random-letter-swap-pingpong-anim";
 import Image from "next/image";
 
 const exampleImages = [
@@ -54,12 +53,9 @@ export default function HomePage() {
       className="flex w-full h-[calc(100vh-4rem)] relative justify-center items-center flex-col bg-[#CAF0F8] overflow-hidden"
       ref={setContainer}
     >
-      <RandomLetterSwapPingPong
-        label="Munja Bank'a Hoş Geldiniz"
-        reverse={false}
-        staggerDuration={0.03}
-        className="absolute z-10 text-center text-3xl sm:text-5xl md:text-6xl top-3  text-black font-serif"
-      />
+      <h1 className="absolute z-10 text-center text-3xl sm:text-5xl md:text-6xl top-3 text-black font-serif">
+        Munja Bank'a Hoş Geldiniz
+      </h1>
       {isMounted && container && (
         <div className="absolute h-[170%] sm:h-[200%] top-0 w-full justify-center items-center flex flex-col space-y-2 sm:space-y-3 md:space-y-4">
           <SimpleMarquee

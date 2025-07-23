@@ -44,6 +44,17 @@ export function MainNav() {
       >
         Yatırımcı İlişkileri
       </Link>
+      <Link
+        href="/yatirim"
+        className={cn(
+          "transition-colors hover:text-foreground/80",
+          pathname?.startsWith("/yatirim")
+            ? "text-foreground"
+            : "text-foreground/60"
+        )}
+      >
+        Yatırım
+      </Link>
     </nav>
   );
 }
