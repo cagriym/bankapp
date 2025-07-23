@@ -55,5 +55,32 @@ export default async function (server: FastifyInstance, options: FastifyPluginOp
     }
   });
 
+  // Kayıt endpoint'i: POST /api/auth/register
+  server.post('/register', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { email, pin } = request.body as { email?: string; pin?: string };
+
+    if (!email || !pin) {
+      return reply.code(400).send({ error: 'Email ve PIN zorunludur.' });
+    }
+    if (!/^[0-9]{4,6}$/.test(pin)) {
+      return reply.code(400).send({ error: 'PIN 4-6 haneli rakamlardan oluşmalıdır.' });
+    }
+    try {
+      const bcrypt = require('bcryptjs');
+      const hashedPin = await bcrypt.hash(pin, 10);
+      const { data, error } = await supabase.from('users').insert({
+        email,
+        pin_hash: hashedPin,
+      });
+      if (error) {
+        return reply.code(500).send({ error: error.message });
+      }
+      reply.code(201).send({ message: 'Kayıt başarılı!', user: data });
+    } catch (err) {
+      server.log.error(err, 'Register endpointinde sunucu hatası');
+      reply.code(500).send({ error: 'Sunucuda bir hata oluştu.' });
+    }
+  });
+
   // Diğer auth endpoint'lerini (register, logout vb.) buraya ekleyebilirsin.
 }
