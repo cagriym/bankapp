@@ -1,0 +1,6 @@
+{
+  "/page": "app/page.js",
+  "/bireysel/hesaplarim/page": "app/bireysel/hesaplarim/page.js",
+  "/bireysel/page": "app/bireysel/page.js",
+  "/bireysel/paraaktar/page": "app/bireysel/paraaktar/page.js"
+}

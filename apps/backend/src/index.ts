@@ -1,6 +1,9 @@
 import fastify from 'fastify';
 import cors from '@fastify/cors';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
+import fastifySwagger from '@fastify/swagger';
+import fastifySwaggerUi from '@fastify/swagger-ui';
+import fastifyJwt from '@fastify/jwt';
 
 // Auth route'unu import et
 import authRoutes from './routes/auth/index';
@@ -12,6 +15,23 @@ const server = fastify({
   // Gelen istekleri ve diğer önemli bilgileri konsolda görmek için loglamayı açar.
   // Geliştirme sırasında çok faydalıdır.
   logger: true 
+});
+
+// JWT pluginini ekle
+server.register(fastifyJwt, { secret: process.env.JWT_SECRET || 'gizli-bir-string' });
+
+// Swagger/OpenAPI entegrasyonu
+server.register(fastifySwagger, {
+  openapi: {
+    info: {
+      title: 'Munja Bank API',
+      description: 'Munja Bank API dokümantasyonu',
+      version: '1.0.0'
+    }
+  }
+});
+server.register(fastifySwaggerUi, {
+  routePrefix: '/docs',
 });
 
 // Frontend'den gelen isteklere izin vermek için CORS'u etkinleştir

@@ -2,11 +2,11 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { apiFetch } from "@/lib/api";
+
+// Supabase ile ilgili import ve kodlar kaldırıldı. Tüm auth işlemleri Fastify API'ye fetch ile yapılacak.
 
 export async function login(formData: FormData) {
-  const supabase = createClient()
-
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
@@ -14,23 +14,30 @@ export async function login(formData: FormData) {
     return redirect('/online-islemler?message=E-posta ve şifre gerekli.')
   }
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    })
 
-  if (error) {
-    console.error('Giriş Hatası:', error.message)
+    if (!response.ok) {
+      const errorData = await response.json()
+      console.error('Giriş Hatası:', errorData.message)
+      return redirect(`/online-islemler?message=${errorData.message}`)
+    }
+
+    revalidatePath('/', 'layout')
+    redirect('/')
+  } catch (error) {
+    console.error('Giriş Hatası:', error)
     return redirect('/online-islemler?message=Giriş başarısız. Lütfen bilgilerinizi kontrol edin.')
   }
-
-  revalidatePath('/', 'layout')
-  redirect('/')
 }
 
 export async function signup(formData: FormData) {
-  const supabase = createClient()
-
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
@@ -38,19 +45,25 @@ export async function signup(formData: FormData) {
     return redirect('/online-islemler?message=E-posta ve şifre gerekli.')
   }
 
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-    },
-  })
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    })
 
-  if (error) {
-    console.error('Kayıt Hatası:', error.message)
+    if (!response.ok) {
+      const errorData = await response.json()
+      console.error('Kayıt Hatası:', errorData.message)
+      return redirect(`/online-islemler?message=${errorData.message}`)
+    }
+
+    revalidatePath('/', 'layout')
+    return redirect('/online-islemler?message=Hesap oluşturuldu. Lütfen e-postanızı kontrol ederek hesabınızı onaylayın.')
+  } catch (error) {
+    console.error('Kayıt Hatası:', error)
     return redirect('/online-islemler?message=Kayıt başarısız. Bu e-posta zaten kullanımda olabilir.')
   }
-
-  revalidatePath('/', 'layout')
-  return redirect('/online-islemler?message=Hesap oluşturuldu. Lütfen e-postanızı kontrol ederek hesabınızı onaylayın.')
 } 

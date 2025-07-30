@@ -1,8 +1,11 @@
-import { createClient } from "@/lib/supabase/server";
+"use client";
 import { siteConfig } from "@/config/site";
 import { Icons } from "./icons";
 import { Button } from "./ui/button";
+import { useAutoLogin } from "@/hooks/auth";
+import jwtDecode from "jwt-decode";
 import Link from "next/link";
+import { useAuthStore } from "@/hooks/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,12 +16,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import SignOutButton from "@/components/SignOutButton";
+import { useState, useEffect } from "react";
+import { formatUserName } from "@/lib/utils";
 
-export async function Navbar() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+function useAuthHydrated() {
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+  return hydrated;
+}
+
+export function Navbar() {
+  const hydrated = useAuthHydrated();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
+  if (!hydrated) return null;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -34,14 +47,16 @@ export async function Navbar() {
         </div>
 
         {/* Center: Navigation ortalanmış */}
-        <div className="flex-1 flex justify-center">
+        <div className="flex-1 flex justify-start">
           <nav className="flex items-center gap-6">
-            <Link
-              href="/bireysel"
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
-              Bireysel
-            </Link>
+            {user && (
+              <Link
+                href="/bireysel"
+                className="text-sm font-medium transition-colors hover:text-primary"
+              >
+                Bireysel
+              </Link>
+            )}
             <Link
               href="/ticari"
               className="text-sm font-medium transition-colors hover:text-primary"
@@ -54,23 +69,17 @@ export async function Navbar() {
             >
               Yatırım
             </Link>
-            <Link
-              href="/yatirimci-iliskileri"
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
-              Yatırımcı İlişkileri
-            </Link>
           </nav>
         </div>
 
         {/* Right: Online İşlemler (daha sağda) */}
         <div className="flex items-center justify-end gap-4 min-w-[200px]">
-          {!user && (
+          {!isAuthenticated && (
             <Button asChild>
               <Link href="/login">Online İşlemler</Link>
             </Button>
           )}
-          {user && (
+          {isAuthenticated && user && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -79,7 +88,7 @@ export async function Navbar() {
                 >
                   <Avatar className="h-9 w-9">
                     <AvatarImage
-                      src={user.user_metadata.avatar_url}
+                      src={user.musteri_epo}
                       alt={user.email || ""}
                     />
                     <AvatarFallback>
@@ -92,7 +101,8 @@ export async function Navbar() {
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium leading-none">
-                      {user.user_metadata.full_name || user.email}
+                      {formatUserName(user.musteri_isim, user.musteri_soy) ||
+                        user.email}
                     </p>
                     <p className="text-xs leading-none text-muted-foreground">
                       {user.email}

@@ -46,7 +46,7 @@
 **Hedef**: Kullanıcı giriş/çıkış sistemi
 
 - [x] Supabase Auth entegrasyonu
-- [ ] PIN şifreleme sistemi
+- [x] PIN şifreleme sistemi
 - [x] Login/Register sayfaları
 - [ ] Zustand auth store
 - [x] Protected routes

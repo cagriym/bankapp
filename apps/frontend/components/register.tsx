@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createBrowserClient } from "@supabase/ssr";
 import {
   Card,
   CardContent,
@@ -15,43 +14,48 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 export default function Register() {
-  const [fullName, setFullName] = useState("");
+  const [isim, setIsim] = useState("");
+  const [soy, setSoy] = useState("");
+  const [no, setNo] = useState("");
+  const [tel, setTel] = useState("");
+  const [bakiye, setBakiye] = useState("");
+  const [pin, setPin] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setSuccess(false);
-
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
-        },
-      },
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      setSuccess(true);
-      setTimeout(
-        () =>
+    try {
+      const res = await fetch("http://localhost:5001/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          isim,
+          soy,
+          no: Number(no),
+          tel,
+          email,
+          bakiye: Number(bakiye),
+          pin,
+        }),
+      });
+      const data = await res.json();
+      if (data.message) {
+        setSuccess(true);
+        setTimeout(() => {
           router.push(
             "/login?message=Kaydınız oluşturuldu. Lütfen giriş yapın."
-          ),
-        2000
-      );
+          );
+        }, 2000);
+      } else {
+        setError(data.error || "Kayıt başarısız.");
+      }
+    } catch (err) {
+      setError("Bir hata oluştu. Lütfen tekrar deneyin.");
     }
   };
 
@@ -66,14 +70,37 @@ export default function Register() {
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="full-name">Ad Soyad</Label>
+            <Label htmlFor="isim">Ad</Label>
             <Input
-              id="full-name"
+              id="isim"
               type="text"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              value={isim}
+              onChange={(e) => setIsim(e.target.value)}
               required
-              placeholder="Adınız Soyadınız"
+              placeholder="Adınız"
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="soy">Soyad</Label>
+            <Input
+              id="soy"
+              type="text"
+              value={soy}
+              onChange={(e) => setSoy(e.target.value)}
+              required
+              placeholder="Soyadınız"
+            />
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="tel">Telefon</Label>
+            <Input
+              id="tel"
+              type="text"
+              value={tel}
+              onChange={(e) => setTel(e.target.value)}
+              required
+              placeholder="Telefon Numaranız"
             />
           </div>
           <div className="grid gap-2">
@@ -87,15 +114,16 @@ export default function Register() {
               placeholder="ornek@eposta.com"
             />
           </div>
+
           <div className="grid gap-2">
-            <Label htmlFor="password">Şifre</Label>
+            <Label htmlFor="pin">PIN</Label>
             <Input
-              id="password"
+              id="pin"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
               required
-              placeholder="••••••••"
+              placeholder="örn: 123456"
             />
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}

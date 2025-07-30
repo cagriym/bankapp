@@ -1,0 +1,73 @@
+
+> frontend@ build C:\Users\xmemo\bankauygulamasi\apps\frontend
+> next build
+
+   ▲ Next.js 15.4.1
+   - Environments: .env
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: EPERM: operation not permitted, rename 'C:\Users\xmemo\bankauygulamasi\apps\frontend\.next\cache\webpack\server-production\0.pack_' -> 'C:\Users\xmemo\bankauygulamasi\apps\frontend\.next\cache\webpack\server-production\0.pack'
+ ✓ Compiled successfully in 11.0s
+   Linting and checking validity of types ...
+
+./app/online-islemler/actions.ts
+5:10  Warning: 'apiFetch' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/profil/page.tsx
+5:8  Warning: 'jwtDecode' is defined but never used.  @typescript-eslint/no-unused-vars
+6:10  Warning: 'Avatar' is defined but never used.  @typescript-eslint/no-unused-vars
+6:18  Warning: 'AvatarFallback' is defined but never used.  @typescript-eslint/no-unused-vars
+6:34  Warning: 'AvatarImage' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/app-sidebar.tsx
+7:3  Warning: 'IconDashboard' is defined but never used.  @typescript-eslint/no-unused-vars
+19:3  Warning: 'IconUsers' is defined but never used.  @typescript-eslint/no-unused-vars
+25:10  Warning: 'NavUser' is defined but never used.  @typescript-eslint/no-unused-vars
+26:10  Warning: 'useAuthStore' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/login-form.tsx
+17:10  Warning: 'apiFetch' is defined but never used.  @typescript-eslint/no-unused-vars
+44:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/navbar.tsx
+5:10  Warning: 'useAutoLogin' is defined but never used.  @typescript-eslint/no-unused-vars
+6:8  Warning: 'jwtDecode' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/register.tsx
+19:14  Warning: 'setNo' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+21:18  Warning: 'setBakiye' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+57:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/17) ...
+   Generating static pages (4/17) 
+   Generating static pages (8/17) 
+   Generating static pages (12/17) 
+ ✓ Generating static pages (17/17)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    55.4 kB         163 kB
+├ ○ /_not-found                            998 B         101 kB
+├ ○ /bireysel                             194 kB         331 kB
+├ ○ /bireysel/borsa                        142 B         100 kB
+├ ○ /bireysel/hesaplarim                   142 B         100 kB
+├ ○ /bireysel/paraaktar                    142 B         100 kB
+├ ○ /hakkimizda                            142 B         100 kB
+├ ○ /login                               2.84 kB         113 kB
+├ ○ /online-islemler                     2.73 kB         113 kB
+├ ○ /profil                              2.13 kB         102 kB
+├ ○ /register                            3.98 kB         112 kB
+├ ○ /ticari                                142 B         100 kB
+├ ○ /yatirim                               142 B         100 kB
+└ ○ /yatirimci                             142 B         100 kB
++ First Load JS shared by all             100 kB
+  ├ chunks/260-99c2b9b0217fd238.js       43.9 kB
+  ├ chunks/33a80eac-a6f7845a83814086.js  54.1 kB
+  └ other shared chunks (total)          2.04 kB
+
+
+○  (Static)  prerendered as static content
+

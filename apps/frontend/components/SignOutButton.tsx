@@ -1,19 +1,17 @@
 "use client";
 
-import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
+import { useAuthStore } from "@/hooks/auth";
 
 export default function SignOutButton() {
   const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const logout = useAuthStore((state) => state.logout);
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    await fetch("/api/auth/logout", { method: "POST" });
+    logout();
     router.push("/");
     router.refresh();
   };

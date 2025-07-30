@@ -1,15 +1,23 @@
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+"use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/hooks/auth";
+import jwtDecode from "jwt-decode";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { formatUserName, formatIBAN } from "@/lib/utils";
 
-export default async function ProfilePage() {
-  const supabase = createClient();
+export default function ProfilePage() {
+  const { user } = useAuthStore();
+  const router = useRouter();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, [user, router]);
 
   if (!user) {
-    redirect("/login");
+    return null; // veya bir loader gösterebilirsin
   }
 
   return (
@@ -21,23 +29,36 @@ export default async function ProfilePage() {
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium text-gray-500">
-              Email Adresi
+              Ad Soyad:
+            </label>
+            <p className="mt-1 text-lg text-gray-900">
+              {formatUserName(user.musteri_isim, user.musteri_soy)}
+            </p>
+          </div>
+          <div>
+            <label className="text-sm font-medium text-gray-500">IBAN:</label>
+            <p className="mt-1 text-lg text-gray-900 font-mono">
+              {formatIBAN(user.musteri_iban)}
+            </p>
+          </div>
+          <div>
+            <label className="text-sm font-medium text-gray-500">
+              Email Adresi : {user.musteri_epo}
             </label>
             <p className="mt-1 text-lg text-gray-900">{user.email}</p>
           </div>
           <div>
             <label className="text-sm font-medium text-gray-500">
-              Kullanıcı ID
+              Kullanıcı ID : {user.musteri_id}
             </label>
             <p className="mt-1 text-gray-700 font-mono text-sm">{user.id}</p>
           </div>
           <div>
             <label className="text-sm font-medium text-gray-500">
-              Kayıt Tarihi
+              Kayıt Tarihi :{" "}
+              {user.created &&
+                new Date(user.created).toLocaleDateString("tr-TR")}
             </label>
-            <p className="mt-1 text-gray-700">
-              {new Date(user.created_at).toLocaleDateString("tr-TR")}
-            </p>
           </div>
         </div>
       </div>
